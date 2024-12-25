@@ -62,4 +62,5 @@ def main(page: ft.Page):
     page.add(panel_menu, chart)
 
 
-ft.app(target=main)
+if __name__ == "__main__":
+    ft.app(target=main)

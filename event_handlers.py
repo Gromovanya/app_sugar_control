@@ -24,7 +24,7 @@ def delete_chart(chart: LineChart, name_table: str, page: Page,
     avg_stat.value = 'Пока нет данных'
     max_stat.value = 'Пока нет данных'
     min_stat.value = 'Пока нет данных'
-    count_stat.value = 'Пока нет данных'
+    count_stat.value = '0'
     
     page.update()
     
@@ -45,8 +45,8 @@ def on_change_sugar(input_sugar: TextField, btn_upd: OutlinedButton):
 def timer(input_sugar: TextField, timer_glav: Text, page: Page):
     temp_on_change = input_sugar.on_change
     input_sugar.on_change = None
-    minute = 0
-    secund = 4
+    minute = 5
+    secund = 0
     timer_glav.value = f"{minute:02}:{secund:02}"
     timer_glav.update()
 
@@ -72,33 +72,37 @@ def register_sugar(input_sugar: TextField, btn_upd: OutlinedButton, timer_glav: 
     try:
         num_sugar = round(float(input_sugar.value), 1)
 
-        if MIN_SUGAR < num_sugar <= MAX_SUGAR:
-            current_time = get_current_time()
+        if num_sugar >= MAX_SUGAR:
+            num_sugar = MAX_SUGAR
+        elif num_sugar <= MIN_SUGAR:
+            num_sugar = MIN_SUGAR
+            
+        current_time = get_current_time()
 
-            db = connect_db("db_registr.sugar")
-            create_table(db)
-            insert_db_data(
-                db, num_sugar, current_time[0], current_time[1], current_time[2], current_time[3])
+        db = connect_db("db_registr.sugar")
+        create_table(db)
+        insert_db_data(
+            db, num_sugar, current_time[0], current_time[1], current_time[2], current_time[3])
 
-            stats = fetch_statistics(db)
-            rows = stats['rows'][-1]
-            data_point = [LineChartDataPoint(rows[2], rows[1])]
-            update_chart_data(chart, data_point)
-            renewal_statistics(stats, avg_stat, max_stat, min_stat, count_stat)
+        stats = fetch_statistics(db)
+        rows = stats['rows'][-1]
+        data_point = [LineChartDataPoint(rows[2], rows[1])]
+        update_chart_data(chart, data_point)
+        renewal_statistics(stats, avg_stat, max_stat, min_stat, count_stat)
 
-            db.close()
+        db.close()
 
-            input_sugar.value = ''
-            btn_upd.text = 'Введено'
-            btn_upd.disabled = True
+        input_sugar.value = ''
+        btn_upd.text = 'Введено'
+        btn_upd.disabled = True
 
-            threading.Thread(target=reset_text_bt, args=(
-                btn_upd, page,), daemon=True).start()
+        threading.Thread(target=reset_text_bt, args=(
+            btn_upd, page,), daemon=True).start()
 
-            threading.Thread(target=timer, args=(
-                input_sugar, timer_glav, page,), daemon=True).start()
+        threading.Thread(target=timer, args=(
+            input_sugar, timer_glav, page,), daemon=True).start()
 
-            page.update()
+        page.update()
 
     except ValueError:
         page.snack_bar = SnackBar(

@@ -51,7 +51,7 @@ def create_panel_menu(page: ft.Page, chart: ft.LineChart, panel_statistics: ft.C
                 ),
                 ft.PopupMenuItem(),
                 ft.PopupMenuItem(
-                    icon=ft.icons.PIE_CHART, text='Graph',
+                    icon=ft.icons.AREA_CHART, text='Graph',
                     on_click=lambda _: (
                         page.clean(), page.add(panel_menu, chart))
                 ),
@@ -61,7 +61,7 @@ def create_panel_menu(page: ft.Page, chart: ft.LineChart, panel_statistics: ft.C
                         panel_input_sugar)) if panel_statistics in page.controls else page.add(panel_input_sugar)
                 ),
                 ft.PopupMenuItem(
-                    icon=ft.icons.BAR_CHART, text='Statistics',
+                    icon=ft.icons.SSID_CHART, text='Statistics',
                     on_click=lambda _: (page.controls.remove(panel_input_sugar), page.add(
                         panel_statistics)) if panel_input_sugar in page.controls else page.add(panel_statistics)
                 ),
