@@ -1,10 +1,11 @@
 import flet as ft
-from event_handlers import delete_chart
+from event_handlers import delete_chart, theme_dark_and_light, set_color_page
+
 
 def create_panel_statistics(avg_stat: ft.Text, max_stat: ft.Text, min_stat: ft.Text, count_stat: ft.Text):
     return ft.Column(
         [
-            ft.Row([ft.Text("Статистика за день", size=24, weight=ft.FontWeight.BOLD)],
+            ft.Row([ft.Text("Статистика за день", size=24)],
                     alignment=ft.MainAxisAlignment.CENTER),
             ft.Row([ft.Text("Среднее значение сахара: ", size=20), avg_stat],
                     alignment=ft.MainAxisAlignment.CENTER),
@@ -16,6 +17,7 @@ def create_panel_statistics(avg_stat: ft.Text, max_stat: ft.Text, min_stat: ft.T
                     alignment=ft.MainAxisAlignment.CENTER),
         ]
     )
+
 
 def create_input_sugar(timer_glav: ft.Text, input_sugar: ft.TextField, btn_upd: ft.OutlinedButton):
     return ft.Column(
@@ -39,8 +41,10 @@ def create_input_sugar(timer_glav: ft.Text, input_sugar: ft.TextField, btn_upd: 
         alignment=ft.alignment.center_left
     )
 
+
 def create_panel_menu(page: ft.Page, chart: ft.LineChart, panel_statistics: ft.Column, panel_input_sugar: ft.Column,
-                    avg_stat: ft.Text, max_stat: ft.Text, min_stat: ft.Text, count_stat: ft.Text):
+                        avg_stat: ft.Text, max_stat: ft.Text, min_stat: ft.Text,
+                        count_stat: ft.Text, panel_menu_theme: ft.Container):
     panel_menu = ft.Container(
         content=ft.PopupMenuButton(
             icon=ft.icons.MENU,
@@ -53,7 +57,7 @@ def create_panel_menu(page: ft.Page, chart: ft.LineChart, panel_statistics: ft.C
                 ft.PopupMenuItem(
                     icon=ft.icons.AREA_CHART, text='Graph',
                     on_click=lambda _: (
-                        page.clean(), page.add(panel_menu, chart))
+                        page.clean(), page.add(panel_menu, chart, panel_menu_theme))
                 ),
                 ft.PopupMenuItem(
                     icon=ft.icons.ADD_CHART, text='Input sugar',
@@ -67,10 +71,89 @@ def create_panel_menu(page: ft.Page, chart: ft.LineChart, panel_statistics: ft.C
                 ),
                 ft.PopupMenuItem(
                     icon=ft.icons.DELETE, text='Full cleaning the data of charts',
-                    on_click=lambda e: delete_chart(chart, "db_registr.sugar", page, avg_stat, max_stat, min_stat, count_stat)
+                    on_click=lambda e: delete_chart(
+                        chart, "db_registr.sugar", page, avg_stat, max_stat, min_stat, count_stat)
                 ),
             ],
         ),
         alignment=ft.alignment.top_left
     )
     return panel_menu
+
+
+def create_panel_menu_theme(page: ft.Page, line_chart: ft.LineChart):
+    panel_menu_theme = ft.Column(
+        controls=[
+            ft.Row(
+                [
+                    ft.IconButton(icon=ft.icons.LIGHT_MODE, on_click=lambda _: theme_dark_and_light(
+                        page, line_chart, panel_menu_theme)),
+                    ft.Text('Light', size=17, weight='bold')
+                ]
+            ),
+            ft.Row(
+                [
+                    ft.Container(
+                        content=ft.PopupMenuButton(
+                            icon=ft.icons.PALETTE_OUTLINED,
+                            icon_color=ft.Colors.ON_PRIMARY_CONTAINER,
+                            icon_size=25,
+                            items=[
+                                ft.PopupMenuItem(
+                                    content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.DEEP_PURPLE_ACCENT, size=25),
+                                                    ft.Text('Deep-purple', size=17)]),
+                                    on_click=lambda _: set_color_page(
+                                        page, ft.Colors.DEEP_PURPLE_ACCENT_100)
+                                ),
+                                ft.PopupMenuItem(
+                                    content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.PINK_ACCENT, size=25),
+                                                    ft.Text('Pink', size=17)]),
+                                    on_click=lambda _: set_color_page(
+                                        page, ft.Colors.PINK_ACCENT_100)
+                                ),
+                                ft.PopupMenuItem(
+                                    content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.BLUE_ACCENT, size=25),
+                                                    ft.Text('Blue', size=17)]),
+                                    on_click=lambda _: set_color_page(
+                                        page, ft.Colors.BLUE_ACCENT_100)
+                                ),
+                                ft.PopupMenuItem(
+                                    content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.DEEP_ORANGE_ACCENT, size=25),
+                                                    ft.Text('Deep-orange', size=17)]),
+                                    on_click=lambda _: set_color_page(
+                                        page, ft.Colors.DEEP_ORANGE_ACCENT_100)
+                                ),
+                                ft.PopupMenuItem(
+                                    content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.GREEN_ACCENT, size=25),
+                                                    ft.Text('Green', size=17)]),
+                                    on_click=lambda _: set_color_page(
+                                        page, ft.Colors.GREEN_ACCENT_100)
+                                ),
+                                ft.PopupMenuItem(
+                                    content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.AMBER_ACCENT, size=25),
+                                                    ft.Text('Yellow', size=17)]),
+                                    on_click=lambda _: set_color_page(
+                                        page, ft.Colors.AMBER_ACCENT_100)
+                                ),
+                                ft.PopupMenuItem(
+                                    content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.RED_ACCENT, size=25),
+                                                    ft.Text('Red', size=17)]),
+                                    on_click=lambda _: set_color_page(
+                                        page, ft.Colors.RED_ACCENT_100)
+                                ),
+                                ft.PopupMenuItem(
+                                    content=ft.Row([ft.Icon(ft.Icons.CANCEL, ft.Colors.RED_900, size=25),
+                                                    ft.Text('Default theme', size=17)]),
+                                    on_click=lambda _: set_color_page(
+                                        page, None)
+                                )
+                            ],
+                            shape=ft.RoundedRectangleBorder(radius=15)
+                        )
+                    ),
+                    ft.Text("Extra themes", size=17, weight='bold')
+                ]
+            )
+        ]
+    )
+    return panel_menu_theme
