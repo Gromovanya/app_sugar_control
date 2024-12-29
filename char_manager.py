@@ -1,10 +1,6 @@
 import flet as ft
 from datetime import datetime
-
-HOURS_IN_A_DAY = 24
-MINUTES_IN_AN_HOUR = 60
-MAX_Y = 25
-MIN_Y = 0
+from constants import HOURS_IN_A_DAY, MINUTES_IN_AN_HOUR, MAX_Y, MIN_Y
 
 
 def get_current_time():

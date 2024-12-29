@@ -1,5 +1,9 @@
 import flet as ft
-from event_handlers import delete_chart, theme_dark_and_light, set_color_page
+from event_handlers import (
+    delete_chart,
+    theme_dark_and_light,
+    set_color_page,
+)
 
 
 def create_panel_statistics(avg_stat: ft.Text, max_stat: ft.Text, min_stat: ft.Text, count_stat: ft.Text):
@@ -71,8 +75,8 @@ def create_panel_menu(page: ft.Page, chart: ft.LineChart, panel_statistics: ft.C
                 ),
                 ft.PopupMenuItem(
                     icon=ft.icons.DELETE, text='Full cleaning the data of charts',
-                    on_click=lambda e: delete_chart(
-                        chart, "db_registr.sugar", page, avg_stat, max_stat, min_stat, count_stat)
+                    on_click=lambda _: delete_chart(
+                        chart, page, avg_stat, max_stat, min_stat, count_stat)
                 ),
             ],
         ),
@@ -103,43 +107,43 @@ def create_panel_menu_theme(page: ft.Page, line_chart: ft.LineChart):
                                     content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.DEEP_PURPLE_ACCENT, size=25),
                                                     ft.Text('Deep-purple', size=17)]),
                                     on_click=lambda _: set_color_page(
-                                        page, ft.Colors.DEEP_PURPLE_ACCENT_100)
+                                        page, "DEEP_PURPLE_ACCENT_100")
                                 ),
                                 ft.PopupMenuItem(
                                     content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.PINK_ACCENT, size=25),
                                                     ft.Text('Pink', size=17)]),
                                     on_click=lambda _: set_color_page(
-                                        page, ft.Colors.PINK_ACCENT_100)
+                                        page, "PINK_ACCENT_100")
                                 ),
                                 ft.PopupMenuItem(
                                     content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.BLUE_ACCENT, size=25),
                                                     ft.Text('Blue', size=17)]),
                                     on_click=lambda _: set_color_page(
-                                        page, ft.Colors.BLUE_ACCENT_100)
+                                        page, "BLUE_ACCENT_100")
                                 ),
                                 ft.PopupMenuItem(
                                     content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.DEEP_ORANGE_ACCENT, size=25),
                                                     ft.Text('Deep-orange', size=17)]),
                                     on_click=lambda _: set_color_page(
-                                        page, ft.Colors.DEEP_ORANGE_ACCENT_100)
+                                        page, "DEEP_ORANGE_ACCENT_100")
                                 ),
                                 ft.PopupMenuItem(
                                     content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.GREEN_ACCENT, size=25),
                                                     ft.Text('Green', size=17)]),
                                     on_click=lambda _: set_color_page(
-                                        page, ft.Colors.GREEN_ACCENT_100)
+                                        page, "GREEN_ACCENT_100")
                                 ),
                                 ft.PopupMenuItem(
                                     content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.AMBER_ACCENT, size=25),
                                                     ft.Text('Yellow', size=17)]),
                                     on_click=lambda _: set_color_page(
-                                        page, ft.Colors.AMBER_ACCENT_100)
+                                        page, "AMBER_ACCENT_100")
                                 ),
                                 ft.PopupMenuItem(
                                     content=ft.Row([ft.Icon(ft.Icons.PALETTE_OUTLINED, ft.Colors.RED_ACCENT, size=25),
                                                     ft.Text('Red', size=17)]),
                                     on_click=lambda _: set_color_page(
-                                        page, ft.Colors.RED_ACCENT_100)
+                                        page, "RED_ACCENT_100")
                                 ),
                                 ft.PopupMenuItem(
                                     content=ft.Row([ft.Icon(ft.Icons.CANCEL, ft.Colors.RED_900, size=25),

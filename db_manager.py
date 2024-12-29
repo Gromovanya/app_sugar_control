@@ -1,8 +1,8 @@
 import sqlite3
+from constants import SUGAR_DB
 
-
-def connect_db(name_bd):
-    return sqlite3.connect(name_bd)
+def connect_db():
+    return sqlite3.connect(SUGAR_DB)
 
 
 def create_table(db):
@@ -16,6 +16,7 @@ def create_table(db):
         current_month INTEGER,
         current_year INTEGER
     )""")
+    
     db.commit()
 
 
@@ -27,7 +28,10 @@ def insert_db_data(db, num_sugar, current_time, current_day, current_month, curr
         VALUES (?, ?, ?, ?, ?)""",
                 (num_sugar, current_time, current_day, current_month, current_year))
     db.commit()
-
+    
+def del_table(db, table):
+    cur = db.cursor()
+    cur.execute(f"DROP TABLE IF EXISTS {table}")
 
 def fetch_statistics(db):
     cur = db.cursor()
@@ -49,3 +53,15 @@ def fetch_statistics(db):
     stats['rows'] = cur.fetchall()
 
     return stats
+
+def verification_table(table_name):
+    db = connect_db()
+    cur = db.cursor()
+    
+    cur.execute("""
+        SELECT name FROM sqlite_master WHERE type='table' AND name=?
+        """, (table_name, ))
+    res = cur.fetchone()
+    db.close()
+    
+    return res is None

@@ -1,5 +1,6 @@
 __pycache__
-db_registr.sugar
+db-app-data.sugar
 .idea
 .vscode
 file.py
+data_app_sugar
