@@ -69,7 +69,7 @@ def main(page: ft.Page):
     db.close()
     print(rows)
     
-    modify_setting(page, chart, panel_menu_theme)
+    modify_setting(page, chart, panel_menu_theme, panel_input_sugar, panel_statistics)
     delete_db = False
     current_time = get_current_time()
     for row in rows:

@@ -9,7 +9,9 @@ from constants import (
     KEY_COLOR_DOP_THEME,
     KEY_TIMER_MINUTE,
     KEY_TIMER_SEC,
-    NOT_DATA
+    NOT_DATA,
+    KEY_STATISTICS,
+    KEY_INPUT_SUGAR
 )
 from char_manager import (
     update_chart_data,
@@ -185,7 +187,8 @@ def register_sugar(input_sugar: ft.TextField, btn_upd: ft.OutlinedButton, timer_
         page.update()
 
 
-def modify_setting(page: ft.Page, line_chart: ft.LineChart, theme: ft.Row):
+def modify_setting(page: ft.Page, line_chart: ft.LineChart, theme: ft.Row,
+                    panel_input_sugar: ft.Column, panel_statistics: ft.Column):
     get_json_file()
     setting = reed_data_file(SETTING_PATH_FILE)
     color_dop_theme = setting[KEY_COLOR_DOP_THEME]
@@ -195,3 +198,7 @@ def modify_setting(page: ft.Page, line_chart: ft.LineChart, theme: ft.Row):
     else:
         light_theme(page, line_chart, theme)
     page.bgcolor = getattr(ft.colors, color_dop_theme, None) if color_dop_theme is not None else None
+    if setting[KEY_STATISTICS]:
+        page.add(panel_statistics)
+    elif setting[KEY_INPUT_SUGAR]:
+        page.add(panel_input_sugar)

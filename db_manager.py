@@ -1,7 +1,9 @@
 import sqlite3
-from constants import SUGAR_DB
+from constants import SUGAR_DB, PATH_DIR_JSON
+from os import makedirs
 
 def connect_db():
+    makedirs(PATH_DIR_JSON, exist_ok=True)
     return sqlite3.connect(SUGAR_DB)
 
 

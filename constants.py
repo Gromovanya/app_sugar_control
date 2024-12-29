@@ -5,6 +5,8 @@ KEY_THEME = "theme"
 KEY_COLOR_DOP_THEME = "color_dop_theme"
 KEY_TIMER_MINUTE = "timer_minute"
 KEY_TIMER_SEC = "timer_sec"
+KEY_STATISTICS = "setting"
+KEY_INPUT_SUGAR = "input_sugar"
 
 # Constants for event_handlers.py
 MIN_SUGAR = 0
@@ -17,7 +19,7 @@ MAX_Y = 25
 MIN_Y = 0
 
 # Constants for db_manager.py
-SUGAR_DB = "db-app-data.sugar"
+SUGAR_DB = "data_app_sugar/db-app-data.sugar"
 
 
 # Constants for json_manager.py, event_handlers.py
@@ -28,6 +30,8 @@ DEFAULT_SETTINGS = {
     KEY_COLOR_DOP_THEME: None,
     KEY_TIMER_MINUTE: 0,
     KEY_TIMER_SEC: 0,
+    KEY_INPUT_SUGAR: False,
+    KEY_STATISTICS: False
 }
 
 # Constants for event_handlers.py
