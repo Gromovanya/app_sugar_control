@@ -1,6 +1,7 @@
 import time
 import threading
 import flet as ft
+from datetime import datetime
 from constants import (
     MIN_SUGAR,
     MAX_SUGAR,
@@ -11,7 +12,10 @@ from constants import (
     KEY_TIMER_SEC,
     NOT_DATA,
     KEY_STATISTICS,
-    KEY_INPUT_SUGAR
+    KEY_INPUT_SUGAR,
+    DEFAULT_QUANT_OBJECT_ON_PAGE,
+    MINUTES,
+    SECONDS
 )
 from char_manager import (
     update_chart_data,
@@ -26,11 +30,23 @@ from db_manager import (
     del_table
 )
 from json_manager import (
-    reed_data_file,
+    read_data_file,
     update_json_file,
-    get_json_file
 )
 
+
+def modify_page_and_settings(page: ft.Page, panel_true: ft.Column | ft.Container, key_true: bool, keys_false: tuple):
+    if panel_true not in page.controls:
+        if len(page.controls) > DEFAULT_QUANT_OBJECT_ON_PAGE:
+            del page.controls[DEFAULT_QUANT_OBJECT_ON_PAGE:len(page.controls)]
+            update_json_file(key_true, True)
+            
+            for key_false in keys_false:
+                update_json_file(key_false, False)
+            page.add(panel_true)
+        else:
+            page.add(panel_true)
+            update_json_file(key_true, True)
 
 def set_color_page(page: ft.Page, color: str):
     color_code = getattr(ft.colors, color, "#000001") if color is not None else None
@@ -113,13 +129,12 @@ def on_change_sugar(input_sugar: ft.TextField, btn_upd: ft.OutlinedButton):
     btn_upd.update()
 
 
-def timer(input_sugar: ft.TextField, timer_glav: ft.Text, page: ft.Page, on_click: bool=False):
-    get_json_file()
-    setting = reed_data_file(SETTING_PATH_FILE)
+def timer(input_sugar: ft.TextField, timer_glav: ft.Text, page: ft.Page):    
+    setting = read_data_file(SETTING_PATH_FILE)
     temp_on_change = input_sugar.on_change
     input_sugar.on_change = None
-    minute = setting[KEY_TIMER_MINUTE] if on_click else 5
-    second = setting[KEY_TIMER_SEC] if on_click else 0
+    minute = setting[KEY_TIMER_MINUTE]
+    second = setting[KEY_TIMER_SEC]
     timer_glav.value = f"{minute:02}:{second:02}"
     page.update()
 
@@ -137,8 +152,8 @@ def timer(input_sugar: ft.TextField, timer_glav: ft.Text, page: ft.Page, on_clic
         second = 59
         update_json_file(KEY_TIMER_MINUTE, minute)
 
-    update_json_file(KEY_TIMER_MINUTE, 0)
-    update_json_file(KEY_TIMER_SEC, 0)
+    update_json_file(KEY_TIMER_MINUTE, MINUTES)
+    update_json_file(KEY_TIMER_SEC, SECONDS)
     input_sugar.on_change = temp_on_change
     page.update()
 
@@ -189,8 +204,7 @@ def register_sugar(input_sugar: ft.TextField, btn_upd: ft.OutlinedButton, timer_
 
 def modify_setting(page: ft.Page, line_chart: ft.LineChart, theme: ft.Row,
                     panel_input_sugar: ft.Column, panel_statistics: ft.Column):
-    get_json_file()
-    setting = reed_data_file(SETTING_PATH_FILE)
+    setting = read_data_file(SETTING_PATH_FILE)
     color_dop_theme = setting[KEY_COLOR_DOP_THEME]
     
     if setting[KEY_THEME] == 'dark':
@@ -202,3 +216,6 @@ def modify_setting(page: ft.Page, line_chart: ft.LineChart, theme: ft.Row,
         page.add(panel_statistics)
     elif setting[KEY_INPUT_SUGAR]:
         page.add(panel_input_sugar)
+    
+    if setting[KEY_TIMER_MINUTE] != MINUTES and setting[KEY_TIMER_SEC] != SECONDS:
+        timer(panel_input_sugar.controls[2].controls[0].controls[1], panel_input_sugar.controls[1].controls[0], page)

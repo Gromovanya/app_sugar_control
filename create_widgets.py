@@ -3,13 +3,14 @@ from event_handlers import (
     delete_chart,
     theme_dark_and_light,
     set_color_page,
+    modify_page_and_settings
 )
 from json_manager import (
     update_json_file
 )
 from constants import (
     KEY_INPUT_SUGAR,
-    KEY_STATISTICS
+    KEY_STATISTICS,
 )
 
 
@@ -67,21 +68,18 @@ def create_panel_menu(page: ft.Page, chart: ft.LineChart, panel_statistics: ft.C
                 ft.PopupMenuItem(),
                 ft.PopupMenuItem(
                     icon=ft.icons.AREA_CHART, text='Graph',
-                    on_click=lambda _: (
-                        page.clean(), page.add(panel_menu, chart, panel_menu_theme),
+                    on_click=lambda _: (page.clean(), page.add(panel_menu, chart, panel_menu_theme),
                         update_json_file(KEY_INPUT_SUGAR, False), update_json_file(KEY_STATISTICS, False))
                 ),
                 ft.PopupMenuItem(
                     icon=ft.icons.ADD_CHART, text='Input sugar',
-                    on_click=lambda _: (page.controls.remove(panel_statistics), update_json_file(KEY_INPUT_SUGAR, True),
-                        update_json_file(KEY_STATISTICS, False), page.add(panel_input_sugar)) if panel_statistics in page.controls 
-                        else (page.add(panel_input_sugar), update_json_file(KEY_INPUT_SUGAR, True))
+                    on_click=lambda _: modify_page_and_settings(page, panel_input_sugar,
+                        KEY_INPUT_SUGAR, (KEY_STATISTICS, ))
                 ),
                 ft.PopupMenuItem(
                     icon=ft.icons.SSID_CHART, text='Statistics',
-                    on_click=lambda _: (page.controls.remove(panel_input_sugar), update_json_file(KEY_STATISTICS, True),
-                        update_json_file(KEY_INPUT_SUGAR, False), page.add(panel_statistics)) if panel_input_sugar in page.controls 
-                        else (page.add(panel_statistics),  update_json_file(KEY_STATISTICS, True))
+                    on_click=lambda _: modify_page_and_settings(page, panel_statistics,
+                        KEY_STATISTICS, (KEY_INPUT_SUGAR, ))
                 ),
                 ft.PopupMenuItem(
                     icon=ft.icons.DELETE, text='Full cleaning the data of charts',

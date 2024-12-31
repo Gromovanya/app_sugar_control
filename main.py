@@ -60,7 +60,7 @@ def main(page: ft.Page):
                                 avg_stat, max_stat, min_stat, count_stat, panel_menu_theme)
     
     
-    page.add(panel_menu, chart, panel_menu_theme)
+    page.add(panel_menu, chart, panel_menu_theme)   
     
     db = connect_db()
     create_table(db)
@@ -69,7 +69,6 @@ def main(page: ft.Page):
     db.close()
     print(rows)
     
-    modify_setting(page, chart, panel_menu_theme, panel_input_sugar, panel_statistics)
     delete_db = False
     current_time = get_current_time()
     for row in rows:
@@ -86,7 +85,8 @@ def main(page: ft.Page):
             
         renewal_statistics(stats, avg_stat, max_stat, min_stat, count_stat)
         print("Данные добавлены в график.")
-    timer(input_sugar, timer_glav, page, True)
+    
+    modify_setting(page, chart, panel_menu_theme, panel_input_sugar, panel_statistics)
     
 
 
