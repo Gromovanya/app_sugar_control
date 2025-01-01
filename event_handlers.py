@@ -138,12 +138,12 @@ def modify_setting(page: ft.Page, line_chart: ft.LineChart, theme: ft.Row,
     now_timer = read_data_file(TIMER_PATH_FILE)
     color_dop_theme = setting[KEY_COLOR_DOP_THEME]
     
+    page.bgcolor = getattr(ft.colors, color_dop_theme, None) if color_dop_theme else None
     if setting[KEY_THEME] == 'dark':
         update_theme(page, line_chart, theme, 'dark', ft.icons.LIGHT_MODE, "Light")
     else:
         update_theme(page, line_chart, theme, 'light', ft.icons.DARK_MODE, "Dark")
 
-    page.bgcolor = getattr(ft.colors, color_dop_theme, None) if color_dop_theme else None
     if setting[KEY_STATISTICS]:
         page.add(panel_statistics)
     elif setting[KEY_INPUT_SUGAR]:
