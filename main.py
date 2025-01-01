@@ -4,8 +4,6 @@ from char_manager import (
     update_chart_data
 )
 from event_handlers import (
-    on_change_sugar, 
-    register_sugar, 
     delete_chart, 
     renewal_text_stats,
     modify_setting
