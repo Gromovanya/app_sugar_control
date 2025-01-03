@@ -1,4 +1,5 @@
 import flet as ft
+from json_manager import update_json_file
 from event_handlers import (
     delete_chart,
     theme_dark_and_light,
@@ -7,7 +8,6 @@ from event_handlers import (
     register_sugar,
     on_change_sugar
 )
-from json_manager import update_json_file
 from constants import (
     KEY_INPUT_SUGAR,
     KEY_STATISTICS,
@@ -15,15 +15,17 @@ from constants import (
     NOT_DATA
 )
 
+
 def create_row_with_label_and_text(label: str, text: ft.Text) -> ft.Row:
     return ft.Row([ft.Text(label, size=20), text], alignment=ft.MainAxisAlignment.CENTER)
+
 
 def create_panel_statistics() -> ft.Column:
     stats_labels = [
         ("Среднее значение сахара: ", NOT_DATA),
         ("Максимальное значение сахара: ", NOT_DATA),
         ("Минимальное значение сахара: ", NOT_DATA),
-        ("Количество замерок сахара: ", "0"),
+        ("Количество мерок сахара: ", "0"),
     ]
 
     statistics = ft.Column(
@@ -34,15 +36,16 @@ def create_panel_statistics() -> ft.Column:
     )
     return statistics
 
+
 def create_input_sugar(chart: ft.LineChart, page: ft.Page, statistics: ft.Column) -> ft.Column:
     input_sugar = ft.TextField(
         label='Введите сахар (ммоль/л)', width=230, on_change=lambda _: on_change_sugar(input_sugar, btn_upd_sugar))
-    
+
     timer_glav = ft.Text("00:00", size=27)
-    
+
     btn_upd_sugar = ft.OutlinedButton(
         text='Ввести', width=230, on_click=lambda _:
-            register_sugar(input_sugar, btn_upd_sugar, timer_glav, chart, page, statistics), disabled=True)
+        register_sugar(input_sugar, btn_upd_sugar, timer_glav, chart, page, statistics), disabled=True)
 
     panel_input_sugar = ft.Column(
         [
@@ -62,11 +65,12 @@ def create_input_sugar(chart: ft.LineChart, page: ft.Page, statistics: ft.Column
         ],
         alignment=ft.alignment.center_left
     )
-    
+
     return panel_input_sugar
 
+
 def create_panel_menu(page: ft.Page, chart: ft.LineChart, statistics: ft.Column, panel_input_sugar: ft.Column,
-                        panel_menu_theme: ft.Container) -> ft.Container:
+                      panel_menu_theme: ft.Container) -> ft.Container:
     panel_menu = ft.Container(
         content=ft.PopupMenuButton(
             icon=ft.icons.MENU,
@@ -84,7 +88,8 @@ def create_panel_menu(page: ft.Page, chart: ft.LineChart, statistics: ft.Column,
                 ),
                 ft.PopupMenuItem(
                     icon=ft.icons.ADD_CHART, text='Input sugar',
-                    on_click=lambda _: modify_page_and_settings(page, panel_input_sugar, KEY_INPUT_SUGAR, (KEY_STATISTICS,))
+                    on_click=lambda _: modify_page_and_settings(page, panel_input_sugar, KEY_INPUT_SUGAR,
+                                                                (KEY_STATISTICS,))
                 ),
                 ft.PopupMenuItem(
                     icon=ft.icons.SSID_CHART, text='Statistics',
@@ -100,12 +105,13 @@ def create_panel_menu(page: ft.Page, chart: ft.LineChart, statistics: ft.Column,
     )
     return panel_menu
 
+
 def create_panel_menu_theme(page: ft.Page, line_chart: ft.LineChart) -> ft.Column:
     colors = [
         ("DEEP_PURPLE_ACCENT", "Deep-purple"),
         ("PINK_ACCENT", "Pink"),
         ("BLUE_ACCENT", "Blue"),
-        ("DEEP_ORANGE_ACCENT_100", "Deep-orange"),
+        ("DEEP_ORANGE_ACCENT", "Deep-orange"),
         ("GREEN_ACCENT", "Green"),
         ("AMBER_ACCENT", "Yellow"),
         ("RED_ACCENT", "Red")
@@ -131,8 +137,9 @@ def create_panel_menu_theme(page: ft.Page, line_chart: ft.LineChart) -> ft.Colum
         controls=[
             ft.Row(
                 [
-                    ft.IconButton(icon=ft.icons.LIGHT_MODE, on_click=lambda _: theme_dark_and_light(page, line_chart, panel_menu_theme)),
-                    ft.Text('Light', size=17, weight='bold')
+                    ft.IconButton(icon=ft.icons.LIGHT_MODE,
+                                  on_click=lambda _: theme_dark_and_light(page, line_chart, panel_menu_theme)),
+                    ft.Text('Light', size=17, weight=ft.FontWeight.BOLD)
                 ]
             ),
             ft.Row(
@@ -146,7 +153,7 @@ def create_panel_menu_theme(page: ft.Page, line_chart: ft.LineChart) -> ft.Colum
                             shape=ft.RoundedRectangleBorder(radius=15)
                         )
                     ),
-                    ft.Text("Extra themes", size=17, weight='bold')
+                    ft.Text("Extra themes", size=17, weight=ft.FontWeight.BOLD)
                 ]
             )
         ]

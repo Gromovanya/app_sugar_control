@@ -10,7 +10,7 @@ KEY_INPUT_SUGAR: str = "input_sugar"
 MIN_SUGAR: int = 0
 MAX_SUGAR: int = 25
 DEFAULT_QUANT_OBJECT_ON_PAGE: int = 3
-MINUTES: int = 5
+MINUTES: int = 30
 SECONDS: int = 0
 
 # Constants for char_manager.py
