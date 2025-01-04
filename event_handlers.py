@@ -159,7 +159,7 @@ def modify_setting(page: ft.Page, line_chart: ft.LineChart, theme: ft.Column,
     elif setting[KEY_INPUT_SUGAR]:
         page.add(panel_input_sugar)
 
-    if now_timer[KEY_TIMER_MINUTE] != 5 or now_timer[KEY_TIMER_SEC] != 0:
+    if now_timer[KEY_TIMER_MINUTE] != MINUTES or now_timer[KEY_TIMER_SEC] != SECONDS:
         timer(
             panel_input_sugar.controls[2].controls[0].controls[1],
             panel_input_sugar.controls[1].controls[0],
