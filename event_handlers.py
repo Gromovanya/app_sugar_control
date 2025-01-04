@@ -134,12 +134,12 @@ def register_sugar(input_sugar: ft.TextField, btn_upd: ft.OutlinedButton, timer_
         btn_upd.disabled = True
 
         threading.Thread(target=timer, args=(input_sugar, timer_glav, page, btn_upd), daemon=True).start()
-        page.update()
 
     except ValueError:
         page.snack_bar = ft.SnackBar(ft.Text('Нужно вводить только числа!'))
         page.snack_bar.open = True
-        page.snack_bar.update()
+    finally:
+        page.update()
 
 
 def modify_setting(page: ft.Page, line_chart: ft.LineChart, theme: ft.Column,
